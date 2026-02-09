@@ -1,2 +1,1535 @@
 # TFG-SMR.-Web.Componentes
-Está sin terminar
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>E-Components</title>
+  <style>
+
+    /* Colores de la web */
+    :root {
+      --primary-dark: #291680;
+      --primary-mid: #452b91;
+      --primary-light: #7049be;
+      --bg: #f8f9fa;
+      --text: #141414;
+      --gray: #ff0000;
+    }
+
+    /* Márgenes y relleno*/
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Estilos básicos */
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* Encabezado principal */
+    header {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary-mid));
+      color: white;
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    /* Configuración del logo*/
+    .logo {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: rgb(255, 255, 255);
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 600px;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .right-icons {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .lang-select select,
+    .login-btn, .cart-btn {
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .cart-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+
+    .cart-count {
+      background: #e91e63;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    /* ENCABEZADO SECUNDARIO */
+    .secondary-header {
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+      position: sticky;
+      top: 66px;
+      z-index: 999;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .secondary-nav {
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+    }
+
+    /* Botón del menú de categorías */
+    .categories-menu-btn {
+      background: var(--primary-mid);
+      justify-content: center;
+      margin-left: auto;
+      margin-right: auto;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .categories-menu-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Botón configurador de PC */
+    .pc-builder-btn {
+      background: linear-gradient(135deg, #e91e63, #ff6090);
+      color: white;
+      justify-content: center;
+      margin-left: auto;
+      margin-right: auto;
+      border: none;
+      padding: 12px 24px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      border-radius: 4px;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(233, 30, 99, 0.3);
+    }
+
+    .pc-builder-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(233, 30, 99, 0.4);
+    }
+
+    /* Botones de ofertas y novedades */
+    .secondary-action-btn {
+      background: #f0f0f0;
+      justify-content: center;
+      justify-items: center;
+      margin-left: auto;
+      margin-right: auto;
+      color: var(--text);
+      border: 2px solid transparent;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .secondary-action-btn:hover {
+      background: #e0e0e0;
+      border-color: var(--primary-mid);
+    }
+
+    /* Menú lateral */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100%;
+      background: var(--primary-dark);
+      color: white;
+      transition: left 0.3s ease;
+      z-index: 2000;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .sidebar-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 14px 10px;
+      font-size: 1.1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar a:hover {
+      background: var(--primary-mid);
+    }
+
+    /* Overlay para cerrar menú clicando fuera */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Contenido principal */
+    main {
+      max-width: 1600px;
+      margin: 30px auto;
+      padding: 0 16px;
+    }
+
+    h1, h2 {
+      color: var(--primary-dark);
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .category-card {
+      background: rgb(255, 255, 255);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(93, 103, 163, 0.432);
+      overflow: hidden;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      min-height: 325px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+    }
+
+    .category-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .category-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.3s ease;
+      z-index: 1;
+    }
+
+    .category-card:hover::before {
+      transform: scale(1.05);
+    }
+
+    .category-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to top, rgba(93, 106, 143, 0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%);
+      z-index: 2;
+    }
+
+    .category-card h3 {
+      padding: 25px 20px;
+      margin: 0;
+      background: linear-gradient(to top, var(--primary-dark), transparent);
+      color: white;
+      font-size: 1.6rem;
+      font-weight: bold;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      position: relative;
+      z-index: 3;
+    }
+
+    /* Vista de productos (categoría seleccionada) */
+    #product-view {
+      display: none;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 25px;
+      justify-content: center;
+    }
+
+    .filters select, .filters input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      min-width: 180px;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .product-card {
+      background: rgb(255, 255, 255);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+      text-align: center;
+      padding: 15px;
+    }
+
+    .product-card img {
+      max-width: 100%;
+      height: 180px;
+      object-fit: contain;
+    }
+
+    .product-card h4 {
+      margin: 12px 0 8px;
+      font-size: 1.1rem;
+      color: var(--primary-dark);
+    }
+
+    .product-card .price {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #e91e63;
+      margin: 8px 0;
+    }
+
+    .product-card button {
+      background: var(--primary-mid);
+      color: rgb(255, 255, 255);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .product-card button:hover {
+      background: var(--primary-dark);
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin: 30px auto;
+      background: var(--primary-mid);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+    }
+
+    .back-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    /* CONFIGURADOR DE PC */
+    #pc-builder-view {
+      display: none;
+    }
+
+    .builder-container {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .builder-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .builder-header h2 {
+      color: var(--primary-dark);
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .builder-header p {
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    .builder-sections {
+      display: grid;
+      gap: 20px;
+    }
+
+    .builder-section {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 20px;
+      border: 2px solid #e0e0e0;
+      transition: border-color 0.2s;
+    }
+
+    .builder-section.selected {
+      border-color: var(--primary-mid);
+      background: #f0e6ff;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-required {
+      color: #e91e63;
+      font-size: 0.85rem;
+      font-weight: normal;
+    }
+
+    .component-options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .component-option {
+      background: white;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      padding: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative; /* Necesario para posicionar el preview */
+    }
+
+    .component-option:hover {
+      border-color: var(--primary-mid);
+      transform: translateX(5px);
+    }
+
+    .component-option.selected {
+      border-color: var(--primary-mid);
+      background: #f0e6ff;
+    }
+
+    .component-info {
+      flex: 1;
+    }
+
+    .component-name {
+      font-weight: bold;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .component-specs {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .component-price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #e91e63;
+      white-space: nowrap;
+      margin-left: 15px;
+    }
+
+    /* -----------------------------------------------------
+       CAMBIOS REALIZADOS AQUÍ (Preview de imagen al hover)
+       ----------------------------------------------------- */
+    .component-preview {
+      position: absolute;
+      bottom: 100%; /* Se coloca encima del elemento */
+      left: 50%;    /* Centrado horizontalmente */
+      top: auto;    /* Anulamos cualquier top anterior */
+      transform: translateX(-50%); /* Ajuste fino del centro */
+      
+      width: 300px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      padding: 15px;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      margin-bottom: 15px; /* Separación entre el componente y la imagen */
+    }
+    
+    /* Flecha decorativa inferior del popup (opcional, para estética) */
+    .component-preview::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -10px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: white transparent transparent transparent;
+    }
+
+    .component-option:hover .component-preview {
+      opacity: 1;
+    }
+
+    .component-preview img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .component-preview-name {
+      font-weight: bold;
+      color: var(--primary-dark);
+      margin-bottom: 5px;
+    }
+
+    .component-preview-specs {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    /* -----------------------------------------------------
+       CAMBIOS REALIZADOS AQUÍ (Resumen del configurador)
+       ----------------------------------------------------- */
+    .builder-summary {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary-mid));
+      color: white;
+      border-radius: 12px;
+      padding: 25px;
+      margin-top: 30px;
+      /* Eliminado sticky y posición top para que vaya debajo */
+      position: static; 
+      width: 100%;
+    }
+
+    .summary-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .summary-items {
+      margin-bottom: 20px;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .summary-item-label {
+      font-weight: 600;
+    }
+
+    .summary-item-value {
+      text-align: right;
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-top: 2px solid rgba(255,255,255,0.4);
+      margin-top: 10px;
+    }
+
+    .summary-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .summary-btn {
+      background: white;
+      color: var(--primary-dark);
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .summary-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .summary-btn.secondary {
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+
+    /* -----------------------------------------------------
+       CAMBIOS REALIZADOS AQUÍ (Layout General)
+       ----------------------------------------------------- */
+    .builder-layout {
+      display: flex;         /* Cambiado de GRID a FLEX */
+      flex-direction: column; /* Para que se apilen verticalmente */
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    /* Modal de carrito */
+    .cart-modal {
+      position: fixed;
+      top: 0;
+      right: -500px;
+      width: 500px;
+      height: 100%;
+      background: white;
+      box-shadow: -4px 0 12px rgba(0,0,0,0.2);
+      z-index: 2500;
+      transition: right 0.3s ease;
+      overflow-y: auto;
+    }
+
+    .cart-modal.open {
+      right: 0;
+    }
+
+    .cart-header {
+      background: var(--primary-dark);
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .cart-header h3 {
+      font-size: 1.5rem;
+      margin: 0;
+    }
+
+    .cart-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    .cart-content {
+      padding: 20px;
+    }
+
+    .cart-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #999;
+    }
+
+    .cart-item {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .cart-item-img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 4px;
+      background: white;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-name {
+      font-weight: bold;
+      color: var(--primary-dark);
+      margin-bottom: 5px;
+    }
+
+    .cart-item-price {
+      color: #e91e63;
+      font-weight: bold;
+    }
+
+    .cart-item-remove {
+      background: #ff4444;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .cart-item-remove:hover {
+      background: #cc0000;
+    }
+
+    .cart-total {
+      background: var(--primary-dark);
+      color: white;
+      padding: 20px;
+      margin: 20px -20px -20px;
+      position: sticky;
+      bottom: 0;
+    }
+
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .cart-checkout-btn {
+      background: #e91e63;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.1rem;
+      width: 100%;
+    }
+
+    .cart-checkout-btn:hover {
+      background: #c2185b;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .builder-layout {
+        /* No necesitamos cambiar grid columns porque ahora es flex siempre */
+      }
+
+      .builder-summary {
+        position: static;
+      }
+
+      .component-preview {
+        /* En tablet puede que queramos ocultarlo o ajustarlo, 
+           lo dejaremos por defecto como hemos configurado arriba */
+      }
+    }
+
+    @media (max-width: 768px) {
+      .secondary-nav {
+        flex-wrap: wrap;
+      }
+      
+      .pc-builder-btn, .secondary-action-btn {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+      }
+      
+      .categories-menu-btn {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+      }
+
+      .component-option {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .component-price {
+        margin-left: 0;
+      }
+
+      /* Ocultamos la previsualización en móviles porque no hay hover con ratón */
+      .component-preview {
+        display: none;
+      }
+
+      .cart-modal {
+        width: 100%;
+        right: -100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="overlay" id="overlay"></div>
+
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2 data-translate="menu">Menú</h2>
+      <button class="sidebar-close" id="closeMenu">✕</button>
+    </div>
+    <a href="#" data-category="home" data-translate="inicio">Inicio</a>
+    <a href="#" data-category="portatiles" data-translate="portatiles">Portátiles</a>
+    <a href="#" data-category="ordenadores" data-translate="ordenadores">PC's sobremesa</a>
+    <a href="#" data-category="monitores" data-translate="monitores">Monitores</a>
+    <a href="#" data-category="moviles" data-translate="moviles">Móviles y Tablets</a>
+    <a href="#" data-category="teclados" data-translate="teclados">Teclados</a>
+    <a href="#" data-category="ratones" data-translate="ratones">Ratones</a>
+    <a href="#" data-category="auriculares" data-translate="auriculares">Auriculares</a>
+    <a href="#" data-category="componentes" data-translate="componentes">Componentes internos</a>
+    <a href="#" data-category="impresoras" data-translate="impresoras">Impresoras</a>
+    <a href="#" data-category="proyectores" data-translate="proyectores">Proyectores</a>
+    <a href="#" data-category="pizarras" data-translate="pizarras">Pizarras digitales</a>
+    <a href="#" data-category="consolas y videojuegos" data-translate="consolas">Consolas y videojuegos</a>
+    <a href="#" data-category="routers" data-translate="routers">Routers</a>
+    <a href="#" data-category="sonido" data-translate="sonido">Sonido</a>
+    <a href="#" data-category="cables" data-translate="cables">Cables</a>
+    <a href="#" data-category="mobiliario" data-translate="mobiliario">Mobiliario</a>
+  </nav>
+
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-header">
+      <h3 data-translate="miCesta">Mi Cesta</h3>
+      <button class="cart-close" id="closeCart">✕</button>
+    </div>
+    <div class="cart-content" id="cartContent">
+      <div class="cart-empty" data-translate="cestaVacia">
+        Tu cesta está vacía
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <a class="logo" href="#" id="logo">E-Components</a>
+
+    <div class="search-bar">
+      <input type="search" placeholder="Buscar" id="searchInput" data-translate-placeholder="buscar">
+    </div>
+
+    <div class="right-icons">
+      <div class="lang-select">
+        <select id="language">
+          <option value="es" selected>Español</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+
+      <button class="login-btn" data-translate="login">Iniciar sesión</button>
+      <button class="cart-btn" id="cartBtn">
+        🛒 <span data-translate="cart">Mi cesta</span>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="secondary-header">
+    <nav class="secondary-nav">
+      <button class="categories-menu-btn" id="categoriesMenuBtn" data-translate="todasCategorias">
+        ☰ Todas las categorías
+      </button>
+
+      <button class="pc-builder-btn" id="pcBuilderBtn" data-translate="configuraPc">
+        🖥️ Configura tu PC
+      </button>
+
+      <button class="secondary-action-btn" id="offersBtn" data-translate="ofertas">
+        🔥 Ofertas
+      </button>
+
+      <button class="secondary-action-btn" id="newItemsBtn" data-translate="novedades">
+        ✨ Novedades
+      </button>
+    </nav>
+  </div>
+
+  <main>
+
+    <div id="home-view">
+      <h1 data-translate="welcome">Bienvenido a E-Components</h1>
+      <div class="categories-grid">
+        <div class="category-card" data-category="portatiles">
+          <img src="https://thumb.pccomponentes.com/w-530-530/articles/1086/10864241/1756-lenovo-ideapad-slim-3-15irh8-intel-core-i5-13420h-16gb-1tb-ssd-156-win-11-foto.jpg" alt="Ordenadores portátiles">
+          <h3 data-translate="portatiles">Portátiles</h3>
+        </div>
+        <div class="category-card" data-category="ordenadores">
+          <img src="https://thumb.pccomponentes.com/w-530-530/articles/1095/10954137/1121-pccom-ready-le-amd-ryzen-7-5700x-32gb-1tb-ssd-rtx-3050-v2-comprar.jpg" alt="Ordenadores de sobremesa">
+          <h3 data-translate="ordenadores">PC's sobremesa</h3>
+        </div>
+        <div class="category-card" data-category="monitores">
+          <img src="https://thumb.pccomponentes.com/w-530-530/articles/1086/10867711/14-asus-rog-swift-oled-pg27ucdm-265-qd-oled-ultrahd-4k-240hz-003ms-freesync-premium-pro-usb-c-b5293045-fcdd-49cb-a08d-7d679fef9949.jpg" alt="Monitores">
+          <h3 data-translate="monitores">Monitores</h3>
+        </div>
+        <div class="category-card" data-category="moviles">
+          <img src="https://thumb.pccomponentes.com/w-530-530/articles/1095/10952675/1994-apple-iphone-17-pro-256gb-naranja-cosmico.jpg" alt="moviles">
+          <h3 data-translate="moviles">Móviles y Tablets</h3>
+        </div>
+        <div class="category-card" data-category="teclados">
+          <img src="https://thumb.pccomponentes.com/w-530-530/articles/1086/10863061/1845-forgeon-meteor-teclado-gaming-wireless-rgb-98-negro-comprar.jpg" alt="teclados">
+          <h3 data-translate="teclados">Teclados</h3>
+        </div>
+        <div class="category-card" data-category="ratones">
+          <img src="https://thumb.pccomponentes.com/w-530-530/articles/21/210655/1677-logitech-g502-lightspeed-raton-gaming-inalambrico-16000dpi-comprar.jpg" alt="ratones">
+          <h3 data-translate="ratones">Ratones</h3>
+        </div>
+        <div class="category-card" data-category="auriculares">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq4kF7CJfYnT5g0YTH0qPXwpN5hoG_xfLRwA&s" alt="auriculares">
+          <h3 data-translate="auriculares">Auriculares</h3>
+        </div>
+        <div class="category-card" data-category="componentes">
+          <img src="https://thumb.pccomponentes.com/w-530-530/articles/1092/10923236/1359-tarjeta-grafica-palit-geforce-rtx-5070-ti-gamingpro-s-16gb-gddr7-256bit-pcie-50.jpg" alt="componentes">
+          <h3 data-translate="componentes">Componentes internos</h3>
+        </div>
+        <div class="category-card" data-category="impresoras">
+          <img src="https://thumb.pccomponentes.com/w-530-530/articles/1095/10953511/1893-impresora-inyeccion-de-tinta-wi-fi-epson-ecotank-et-2950-multifuncion-con-impresion-duplex-foto.jpg" alt="PC sobremesa">
+          <h3 data-translate="impresoras">Impresoras</h3>
+        </div>
+        <div class="category-card" data-category="proyectores">
+          <img src="https://sonicolor.es/33872-large_default/optoma-w371-proyector-wxga.jpg" alt="proyectores">
+          <h3 data-translate="proyectores">Proyectores</h3>
+        </div>
+        <div class="category-card" data-category="pizarras">
+          <img src="https://thumb.pccomponentes.com/w-530-530/articles/1097/10977401/1444-samsung-wa65f-pizarra-interactiva-65-ultrahd-4k-tactil-android-negra.jpg" alt="pizarras">
+          <h3 data-translate="pizarrasDigitales">Pizarras digitales y TV's</h3>
+        </div>
+        <div class="category-card" data-category="consolas y videojuegos">
+          <img src="https://thumb.pccomponentes.com/w-530-530/articles/1096/10963838/3573-replay-sony-ps5-standard-chasis-c-refurbished-foto.jpg" alt="consolas y videojuegos">
+          <h3 data-translate="consolas">Consolas y videojuegos</h3>
+        </div>
+        <div class="category-card" data-category="sonido">
+          <img src="https://thumb.pccomponentes.com/w-530-530/articles/40/409517/1712-tempest-m20-rgb-master-20-altavoces-gaming-con-bluetooth-negros-caracteristicas.jpg" alt="sonido">
+          <h3 data-translate="sonido">Sonido</h3>
+        </div>
+        <div class="category-card" data-category="routers">
+          <img src="https://thumb.pccomponentes.com/w-530-530/articles/1095/10954773/1132-router-tp-link-archer-ge230-rj-45-wi-fi-7-3570-mbit-s-doble-banda-25gbe-usb.jpg" alt="routers">
+          <h3 data-translate="routers">Routers</h3>
+        </div>
+        <div class="category-card" data-category="cables">
+          <img src="https://pcbox.vtexassets.com/arquivos/ids/2338159/A125-0364-IMG-DEF.jpg?v=638702281523200000" alt="cables">
+          <h3 data-translate="cables">Cables</h3>
+        </div>
+        <div class="category-card" data-category="mobiliario">
+          <img src="https://thumb.pccomponentes.com/w-530-530/articles/21/219328/3846-owlotech-columbia-v2-silla-oficina-4d086527-b0ae-46a5-81fb-522c5af87d40.jpg" alt="mobiliario">
+          <h3 data-translate="mobiliario">Mobiliario</h3>
+        </div>
+      </div>
+    </div>
+
+    <div id="product-view">
+      <button class="back-btn" id="backToHome" data-translate="volver">← Volver al inicio</button>
+      <h2 id="category-title">Categoría</h2>
+      <div class="filters">
+        <select id="sort">
+          <option value="nombre-asc" data-translate="nombreAsc">Nombre A-Z</option>
+          <option value="nombre-desc" data-translate="nombreDesc">Nombre Z-A</option>
+          <option value="precio-asc" data-translate="precioAsc">Precio menor → mayor</option>
+          <option value="precio-desc" data-translate="precioDesc">Precio mayor → menor</option>
+        </select>
+        <input type="number" id="minPrice" placeholder="Precio mínimo (€)" data-translate-placeholder="minPrecio">
+        <input type="number" id="maxPrice" placeholder="Precio máximo (€)" data-translate-placeholder="maxPrecio">
+        <button onclick="applyFilters()" data-translate="filtrar">Filtrar</button>
+      </div>
+      <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <div id="pc-builder-view">
+      <button class="back-btn" id="backFromBuilder" data-translate="volver">← Volver al inicio</button>
+      
+      <div class="builder-container">
+        <div class="builder-header">
+          <h2 data-translate="configuradorTitulo">🖥️ Configura tu PC a medida</h2>
+          <p data-translate="configuradorDescripcion">Selecciona los componentes que deseas para crear tu ordenador perfecto</p>
+        </div>
+
+        <div class="builder-layout">
+          <div class="builder-sections" id="builderSections">
+            </div>
+
+          <div class="builder-summary">
+            <div class="summary-title" data-translate="resumenTitulo">📋 Resumen de tu PC</div>
+            <div class="summary-items" id="summaryItems"></div>
+            <div class="summary-total">
+              <span data-translate="total">TOTAL:</span>
+              <span id="totalPrice">0,00 €</span>
+            </div>
+            <div class="summary-actions">
+              <button class="summary-btn" id="addToCartBtn" data-translate="añadirCarrito">Añadir al carrito</button>
+              <button class="summary-btn secondary" id="resetBuilderBtn" data-translate="reiniciarConfig">Reiniciar configuración</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Carrito de compras
+    let cart = [];
+
+    // Datos del configurador de PC con imágenes
+    const pcComponents = {
+      cpu: [
+        {id: 'cpu1', name: 'Intel Core i5-13400F', specs: '10 núcleos, 4.6GHz', price: 189.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1076/10760698/1714-intel-core-i5-13400f-46ghz.jpg'},
+        {id: 'cpu2', name: 'Intel Core i7-13700K', specs: '16 núcleos, 5.4GHz', price: 429.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1076/10761318/1840-intel-core-i7-13700k-54-ghz.jpg'},
+        {id: 'cpu3', name: 'AMD Ryzen 5 7600X', specs: '6 núcleos, 5.3GHz', price: 249.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1076/10767740/1565-amd-ryzen-5-7600x-53ghz.jpg'},
+        {id: 'cpu4', name: 'AMD Ryzen 7 7800X3D', specs: '8 núcleos, 5.0GHz, 3D V-Cache', price: 449.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1081/10818973/1256-amd-ryzen-7-7800x3d-50ghz.jpg'},
+        {id: 'cpu5', name: 'AMD Ryzen 9 7950X', specs: '16 núcleos, 5.7GHz', price: 649.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1076/10767747/1650-amd-ryzen-9-7950x-57-ghz.jpg'}
+      ],
+      gpu: [
+        {id: 'gpu1', name: 'NVIDIA RTX 4060', specs: '8GB GDDR6', price: 329.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1082/10827803/1272-msi-geforce-rtx-4060-ventus-2x-black-8gb-gddr6.jpg'},
+        {id: 'gpu2', name: 'NVIDIA RTX 4070', specs: '12GB GDDR6X', price: 629.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1081/10816568/1953-msi-geforce-rtx-4070-ventus-3x-e-12gb-gddr6x-oc.jpg'},
+        {id: 'gpu3', name: 'NVIDIA RTX 4070 Ti', specs: '12GB GDDR6X', price: 849.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1081/10810695/1827-asus-dual-geforce-rtx-4070-ti-evo-oc-edition-12gb-gddr6x.jpg'},
+        {id: 'gpu4', name: 'AMD Radeon RX 7800 XT', specs: '16GB GDDR6', price: 549.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1084/10844639/1650-sapphire-pulse-amd-radeon-rx-7800-xt-gaming-16gb-gddr6.jpg'},
+        {id: 'gpu5', name: 'AMD Radeon RX 7900 XTX', specs: '24GB GDDR6', price: 999.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1079/10799654/1869-sapphire-pulse-amd-radeon-rx-7900-xtx-gaming-oc-24gb-gddr6.jpg'}
+      ],
+      ram: [
+        {id: 'ram1', name: 'Corsair Vengeance 16GB', specs: 'DDR5 5600MHz (2x8GB)', price: 79.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1076/10763390/1698-corsair-vengeance-ddr5-5600-pc5-44800-16gb-2x8gb-cl36.jpg'},
+        {id: 'ram2', name: 'Corsair Vengeance 32GB', specs: 'DDR5 5600MHz (2x16GB)', price: 149.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1076/10763395/1668-corsair-vengeance-ddr5-5600-pc5-44800-32gb-2x16gb-cl36.jpg'},
+        {id: 'ram3', name: 'G.Skill Trident Z5 32GB', specs: 'DDR5 6000MHz (2x16GB)', price: 179.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1076/10763847/1843-gskill-trident-z5-rgb-ddr5-6000-pc5-48000-32gb-2x16gb-cl30.jpg'},
+        {id: 'ram4', name: 'Kingston Fury Beast 64GB', specs: 'DDR5 5200MHz (2x32GB)', price: 289.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1086/10861025/1844-kingston-fury-beast-ddr5-5200-pc5-41600-64gb-2x32gb-cl40.jpg'}
+      ],
+      storage: [
+        {id: 'ssd1', name: 'Samsung 970 EVO Plus 500GB', specs: 'NVMe M.2, 3500MB/s', price: 59.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/19/196988/samsung-970-evo-plus-ssd-500gb-m-2-nvme.jpg'},
+        {id: 'ssd2', name: 'Samsung 980 Pro 1TB', specs: 'NVMe M.2 Gen4, 7000MB/s', price: 99.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/32/322967/1639-samsung-980-pro-ssd-1tb-pcie-40-nvme-m2.jpg'},
+        {id: 'ssd3', name: 'WD Black SN850X 2TB', specs: 'NVMe M.2 Gen4, 7300MB/s', price: 169.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1066/10660682/1360-wd-black-sn850x-ssd-2tb-m2-2280-pcie-gen4-nvme.jpg'}
+      ],
+      cooling: [
+        {id: 'cool1', name: 'Cooler Master Hyper 212', specs: 'Aire, 120mm', price: 39.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1065/10655452/1230-cooler-master-hyper-212-halo-black-ventilador-cpu.jpg'},
+        {id: 'cool2', name: 'Corsair iCUE H100i', specs: 'Líquida, 240mm RGB', price: 129.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/28/284890/1381-corsair-icue-h100i-elite-capellix-refrigeracion-liquida.jpg'},
+        {id: 'cool3', name: 'NZXT Kraken Elite 360', specs: 'Líquida, 360mm LCD', price: 279.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1073/10732482/1460-nzxt-kraken-elite-360-rgb-refrigeracion-liquida-negra.jpg'}
+      ],
+      psu: [
+        {id: 'psu1', name: 'Corsair RM750e', specs: '750W 80+ Gold Modular', price: 109.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1073/10736005/1816-corsair-rme-series-rm750e-750w-80-plus-gold-modular.jpg'},
+        {id: 'psu2', name: 'Corsair RM1000x', specs: '1000W 80+ Gold Modular', price: 189.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/45/453880/1655-corsair-rmx-series-rm1000x-1000w-80-plus-gold-modular-f2150821-2e11-4089-a5e2-e1d15db97c23.jpg'},
+        {id: 'psu3', name: 'Seasonic Vertex GX-1200', specs: '1200W 80+ Gold ATX 3.0', price: 259.99, img: 'https://thumb.pccomponentes.com/w-530-530/articles/1072/10725350/1984-seasonic-vertex-gx-1200-1200w-80-plus-gold-modular.jpg'}
+      ]
+    };
+
+    // Estado del configurador
+    const builderState = {
+      cpu: null,
+      gpu: null,
+      ram: null,
+      storage: null,
+      cooling: null,
+      psu: null
+    };
+    
+    // Funcionalidad del Configurador
+    function initBuilder() {
+      const container = document.getElementById('builderSections');
+      container.innerHTML = '';
+
+      const sections = [
+        {key: 'cpu', title: 'Procesador', icon: '🧠'},
+        {key: 'gpu', title: 'Tarjeta Gráfica', icon: '🎮'},
+        {key: 'ram', title: 'Memoria RAM', icon: '⚡'},
+        {key: 'storage', title: 'Almacenamiento', icon: '💾'},
+        {key: 'cooling', title: 'Refrigeración', icon: '❄️'},
+        {key: 'psu', title: 'Fuente de Alimentación', icon: '🔌'}
+      ];
+
+      sections.forEach(section => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'builder-section';
+        sectionDiv.id = `section-${section.key}`;
+        
+        // Header de sección
+        const header = document.createElement('div');
+        header.className = 'section-header';
+        header.innerHTML = `
+          <div class="section-title">
+            <span>${section.icon}</span>
+            <span>${section.title}</span>
+          </div>
+          <span class="section-required">* Requerido</span>
+        `;
+        sectionDiv.appendChild(header);
+
+        // Opciones
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'component-options';
+
+        pcComponents[section.key].forEach(comp => {
+          const opt = document.createElement('div');
+          opt.className = 'component-option';
+          opt.onclick = () => selectComponent(section.key, comp);
+          
+          opt.innerHTML = `
+            <div class="component-info">
+              <div class="component-name">${comp.name}</div>
+              <div class="component-specs">${comp.specs}</div>
+            </div>
+            <div class="component-price">${comp.price} €</div>
+            <div class="component-preview">
+              <img src="${comp.img}" alt="${comp.name}">
+              <div class="component-preview-name">${comp.name}</div>
+              <div class="component-preview-specs">${comp.specs}</div>
+            </div>
+          `;
+          optionsDiv.appendChild(opt);
+        });
+
+        sectionDiv.appendChild(optionsDiv);
+        container.appendChild(sectionDiv);
+      });
+
+      updateSummary();
+    }
+
+    function selectComponent(type, component) {
+      builderState[type] = component;
+      
+      // Actualizar UI visualmente
+      const section = document.getElementById(`section-${type}`);
+      const options = section.querySelectorAll('.component-option');
+      
+      // Quitar selección previa
+      options.forEach(opt => {
+        opt.classList.remove('selected');
+        // Buscar si este elemento es el clickeado comparando texto (simple way)
+        if(opt.querySelector('.component-name').innerText === component.name) {
+          opt.classList.add('selected');
+        }
+      });
+      
+      section.classList.add('selected');
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const summaryContainer = document.getElementById('summaryItems');
+      summaryContainer.innerHTML = '';
+      let total = 0;
+      let allSelected = true;
+
+      // Mapeo de nombres para el resumen
+      const labels = {
+        cpu: 'Procesador',
+        gpu: 'Gráfica',
+        ram: 'RAM',
+        storage: 'Almacenamiento',
+        cooling: 'Refrigeración',
+        psu: 'Fuente'
+      };
+
+      for (const [key, value] of Object.entries(builderState)) {
+        if (value) {
+          total += value.price;
+          const item = document.createElement('div');
+          item.className = 'summary-item';
+          item.innerHTML = `
+            <span class="summary-item-label">${labels[key]}</span>
+            <span class="summary-item-value">${value.name}<br><small>${value.price} €</small></span>
+          `;
+          summaryContainer.appendChild(item);
+        } else {
+          allSelected = false;
+        }
+      }
+
+      if (total === 0) {
+        summaryContainer.innerHTML = '<div style="text-align:center; color: rgba(255,255,255,0.7); padding: 10px;">Selecciona componentes para ver el resumen</div>';
+      }
+
+      document.getElementById('totalPrice').innerText = total.toFixed(2) + ' €';
+      
+      const addBtn = document.getElementById('addToCartBtn');
+      if(allSelected) {
+        addBtn.disabled = false;
+        addBtn.style.opacity = '1';
+        addBtn.innerText = 'Añadir PC al carrito';
+      } else {
+        addBtn.disabled = true;
+        addBtn.style.opacity = '0.7';
+        addBtn.innerText = 'Completa la configuración';
+      }
+    }
+
+    // Inicializar configurador al cargar la página (aunque esté oculto)
+    initBuilder();
+
+    // Eventos del configurador
+    document.getElementById('pcBuilderBtn').addEventListener('click', () => {
+      document.getElementById('home-view').style.display = 'none';
+      document.getElementById('product-view').style.display = 'none';
+      document.getElementById('pc-builder-view').style.display = 'block';
+      window.scrollTo(0,0);
+    });
+
+    document.getElementById('backFromBuilder').addEventListener('click', () => {
+      document.getElementById('pc-builder-view').style.display = 'none';
+      document.getElementById('home-view').style.display = 'block';
+    });
+
+    document.getElementById('resetBuilderBtn').addEventListener('click', () => {
+      for (const key in builderState) builderState[key] = null;
+      initBuilder(); // Re-renderizar todo limpio
+    });
+
+    document.getElementById('addToCartBtn').addEventListener('click', () => {
+      // Crear un objeto "producto" que sea el PC completo
+      let pcName = "PC Custom: " + builderState.cpu.name + " + " + builderState.gpu.name;
+      let totalPrice = 0;
+      for (const key in builderState) totalPrice += builderState[key].price;
+
+      // Usar la imagen de la caja o del componente principal (GPU)
+      let pcImg = "https://thumb.pccomponentes.com/w-530-530/articles/1067/10674519/1874-tempest-spectra-rgb-usb-30-con-ventana-negra.jpg";
+
+      addToCart({
+        id: 'custom-pc-' + Date.now(),
+        name: pcName,
+        price: totalPrice,
+        img: pcImg
+      });
+
+      // Resetear y volver
+      document.getElementById('pc-builder-view').style.display = 'none';
+      document.getElementById('home-view').style.display = 'block';
+      alert('¡PC añadido al carrito correctamente!');
+    });
+
+    // Lógica del menú lateral
+    const categoriesMenuBtn = document.getElementById('categoriesMenuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const closeMenu = document.getElementById('closeMenu');
+    const overlay = document.getElementById('overlay');
+
+    function openSidebar() {
+      sidebar.classList.add('open');
+      overlay.classList.add('show');
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('show');
+    }
+
+    categoriesMenuBtn.addEventListener('click', openSidebar);
+    closeMenu.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', () => {
+      closeSidebar();
+      document.getElementById('cartModal').classList.remove('open');
+    });
+
+    // Lógica del carrito
+    const cartBtn = document.getElementById('cartBtn');
+    const cartModal = document.getElementById('cartModal');
+    const closeCart = document.getElementById('closeCart');
+
+    function updateCartUI() {
+      const cartCount = document.getElementById('cartCount');
+      const cartContent = document.getElementById('cartContent');
+      
+      cartCount.innerText = cart.length;
+
+      if (cart.length === 0) {
+        cartContent.innerHTML = '<div class="cart-empty">Tu cesta está vacía</div>';
+        return;
+      }
+
+      let html = '';
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        total += item.price;
+        html += `
+          <div class="cart-item">
+            <img src="${item.img}" alt="${item.name}" class="cart-item-img">
+            <div class="cart-item-info">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-price">${item.price.toFixed(2)} €</div>
+            </div>
+            <button class="cart-item-remove" onclick="removeFromCart(${index})">Eliminar</button>
+          </div>
+        `;
+      });
+
+      html += `
+        <div class="cart-total">
+          <div class="cart-total-row">
+            <span>Total</span>
+            <span>${total.toFixed(2)} €</span>
+          </div>
+          <button class="cart-checkout-btn">Realizar pedido</button>
+        </div>
+      `;
+
+      cartContent.innerHTML = html;
+    }
+
+    function addToCart(product) {
+      cart.push(product);
+      updateCartUI();
+      // Pequeña animación del botón
+      cartBtn.style.transform = "scale(1.1)";
+      setTimeout(() => cartBtn.style.transform = "scale(1)", 200);
+    }
+
+    window.removeFromCart = function(index) {
+      cart.splice(index, 1);
+      updateCartUI();
+    };
+
+    cartBtn.addEventListener('click', () => {
+      cartModal.classList.add('open');
+      overlay.classList.add('show');
+    });
+
+    closeCart.addEventListener('click', () => {
+      cartModal.classList.remove('open');
+      overlay.classList.remove('show');
+    });
+
+    // Productos de ejemplo para las categorías
+    const productsDB = {
+        portatiles: [
+            { name: "Portátil Lenovo IdeaPad Slim 3 Gen 8 15IRH8 Intel Core i5-13420H/16GB/1TB SSD/15.6\"", price: 519.00, img: "https://thumb.pccomponentes.com/w-530-530/articles/1084/10847189/1704-lenovo-ideapad-slim-3-gen-8-15irh8-intel-core-i5-13420h-16gb-1tb-ssd-156-comprar.jpg" },
+            { name: "Portátil ASUS TUF Gaming F15 FX506HC-HN004 Intel Core i5-11400H/16GB/512GB SSD/RTX 3050/15.6\"", price: 659.99, img: "https://thumb.pccomponentes.com/w-530-530/articles/1046/10466208/1836-asus-tuf-gaming-f15-fx506hc-hn004-intel-core-i5-11400h-16gb-512gb-ssd-rtx-3050-156.jpg" },
+            { name: "Portátil ASUS TUF Dash F15 FX517ZM-HN002 Intel Core i7-12650H/16GB/512GB SSD/RTX 3060/15.6\"", price: 949.99, img: "https://thumb.pccomponentes.com/w-530-530/articles/1035/10350912/1914-asus-tuf-dash-f15-fx517zm-hn002-intel-core-i7-12700h-16gb-512gb-ssd-rtx-3060-156.jpg" },
+            { name: "Portátil HP Victus 15-fa2012ns Intel Core i5-13420H 13ª 16GB 512GB SSD RTX 4050 15.6\"", price: 849.00, img: "https://thumb.pccomponentes.com/w-530-530/articles/1092/10928875/1152-portatil-hp-victus-15-fa2012ns-intel-core-i5-13420h-13a-16gb-512gb-ssd-rtx-4050-156.jpg" },
+            { name: "Portátil MSI Cyborg 15 B2RWFKG-201XES Intel Core 7 240H 32GB DDR5 1TB SSD RTX 5060 15.6\" FHD RGB", price: 1329.99, img: "https://thumb.pccomponentes.com/w-530-530/articles/1089/10893728/1768-msi-cyborg-15-b2rwfkg-201xes-intel-core-7-240h-32gb-ddr5-1tb-ssd-rtx-5060-156-fhd-rgb-opiniones.jpg" },
+            { name: "Portátil HP OMEN 16-ap0007ns AMD Ryzen AI 7 350 32GB 1TB SSD RTX 5070 8GB 16\"", price: 1499.00, img: "https://thumb.pccomponentes.com/w-530-530/articles/1088/10881998/1620-hp-omen-gaming-laptop-16-ap0007ns-350-16-amd-ryzen-9-350-32gb-1tb-ssd-rtx-5070-ia-gaming-black-caracteristicas.jpg" },
+        ],
+        ordenadores: [
+            { name: "PcCom Ready Intel i5", price: 850.00, img: "https://thumb.pccomponentes.com/w-530-530/articles/1081/10811656/1504-pccom-ready-intel-core-i5-12400f-16gb-1tb-ssd-rtx-4060.jpg" },
+            { name: "PcCom Imperial Ryzen 7", price: 1450.00, img: "https://thumb.pccomponentes.com/w-530-530/articles/1084/10840436/1614-pccom-imperial-amd-ryzen-7-7800x3d-32gb-1tb-ssd-rtx-4070-super-blanco.jpg" }
+        ],
+        monitores: [
+            { name: "LG 24GN600-B 24\"", price: 149.00, img: "https://thumb.pccomponentes.com/w-530-530/articles/35/358532/1467-lg-ultragear-24gn600-b-238-led-ips-fullhd-144hz-freesync-premium.jpg" },
+            { name: "Samsung Odyssey G5 27\"", price: 229.00, img: "https://thumb.pccomponentes.com/w-530-530/articles/1001/10011749/1516-samsung-odyssey-g5-lc27g55tqburxen-27-led-wqhd-144hz-freesync-premium-curva.jpg" }
+        ]
+        // ... (se pueden añadir más)
+    };
+
+    // Navegación a categorías
+    const categoryCards = document.querySelectorAll('.category-card');
+    const sidebarLinks = document.querySelectorAll('.sidebar a');
+    const homeView = document.getElementById('home-view');
+    const productView = document.getElementById('product-view');
+    const categoryTitle = document.getElementById('category-title');
+    const productsGrid = document.getElementById('productsGrid');
+    const backToHome = document.getElementById('backToHome');
+
+    function showCategory(category) {
+      if (category === 'home') {
+        productView.style.display = 'none';
+        document.getElementById('pc-builder-view').style.display = 'none';
+        homeView.style.display = 'block';
+        return;
+      }
+
+      homeView.style.display = 'none';
+      document.getElementById('pc-builder-view').style.display = 'none';
+      productView.style.display = 'block';
+      
+      // Título bonito
+      categoryTitle.innerText = category.charAt(0).toUpperCase() + category.slice(1);
+      
+      // Renderizar productos
+      productsGrid.innerHTML = '';
+      
+      const items = productsDB[category] || [];
+      
+      if (items.length === 0) {
+        productsGrid.innerHTML = '<p>No hay productos disponibles en esta categoría de demostración.</p>';
+      } else {
+        items.forEach(prod => {
+          const card = document.createElement('div');
+          card.className = 'product-card';
+          card.innerHTML = `
+            <img src="${prod.img}" alt="${prod.name}">
+            <h4>${prod.name}</h4>
+            <div class="price">${prod.price} €</div>
+            <button onclick='addToCart(${JSON.stringify(prod)})'>Añadir al carrito</button>
+          `;
+          productsGrid.appendChild(card);
+        });
+      }
+      window.scrollTo(0,0);
+    }
+
+    categoryCards.forEach(card => {
+      card.addEventListener('click', () => {
+        showCategory(card.dataset.category);
+      });
+    });
+
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        showCategory(link.dataset.category);
+        closeSidebar();
+      });
+    });
+
+    backToHome.addEventListener('click', () => {
+      showCategory('home');
+    });
+
+    // Traducciones simples (simulación)
+    const translations = {
+      es: {
+        welcome: "Bienvenido a E-Components",
+        buscar: "Buscar",
+        todasCategorias: "☰ Todas las categorías",
+        configuraPc: "🖥️ Configura tu PC",
+        ofertas: "🔥 Ofertas",
+        novedades: "✨ Novedades",
+        portatiles: "Portátiles",
+        ordenadores: "PC's sobremesa",
+        // ... añadir más según necesidad
+      },
+      en: {
+        welcome: "Welcome to E-Components",
+        buscar: "Search",
+        todasCategorias: "☰ All Categories",
+        configuraPc: "🖥️ Build your PC",
+        ofertas: "🔥 Deals",
+        novedades: "✨ New Arrivals",
+        portatiles: "Laptops",
+        ordenadores: "Desktops",
+        // ...
+      }
+    };
+
+    document.getElementById('language').addEventListener('change', (e) => {
+      const lang = e.target.value;
+      const t = translations[lang];
+      if (!t) return;
+
+      // Ejemplo de traducción de elementos con data-translate
+      document.querySelectorAll('[data-translate]').forEach(el => {
+        const key = el.dataset.translate;
+        if (t[key]) el.innerText = t[key];
+      });
+      
+      document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
+        const key = el.dataset.translatePlaceholder;
+        if (t[key]) el.placeholder = t[key];
+      });
+    });
+
+  </script>
+</body>
+</html>
