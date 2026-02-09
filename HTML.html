@@ -511,7 +511,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: relative; /* Necesario para posicionar el preview */
+      position: relative;
     }
 
     .component-option:hover {
@@ -547,15 +547,13 @@
       margin-left: 15px;
     }
 
-    /* -----------------------------------------------------
-       CAMBIOS REALIZADOS AQUÍ (Preview de imagen al hover)
-       ----------------------------------------------------- */
+    /* Preview de imagen al hover */
     .component-preview {
       position: absolute;
-      bottom: 100%; /* Se coloca encima del elemento */
-      left: 50%;    /* Centrado horizontalmente */
-      top: auto;    /* Anulamos cualquier top anterior */
-      transform: translateX(-50%); /* Ajuste fino del centro */
+      bottom: 100%;
+      left: 50%;
+      top: auto;
+      transform: translateX(-50%);
       
       width: 300px;
       background: white;
@@ -566,10 +564,9 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s;
-      margin-bottom: 15px; /* Separación entre el componente y la imagen */
+      margin-bottom: 15px;
     }
     
-    /* Flecha decorativa inferior del popup (opcional, para estética) */
     .component-preview::after {
       content: '';
       position: absolute;
@@ -604,18 +601,34 @@
       color: #666;
     }
 
-    /* -----------------------------------------------------
-       CAMBIOS REALIZADOS AQUÍ (Resumen del configurador)
-       ----------------------------------------------------- */
+    /* ============================================
+       CAMBIOS PRINCIPALES: Layout del configurador
+       ============================================ */
+    
+    /* Layout en dos columnas: componentes a la izquierda, resumen a la derecha */
+    .builder-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px; /* Componentes ocupan espacio flexible, resumen fijo */
+      gap: 30px;
+      margin-top: 20px;
+      align-items: start; /* Alinear arriba */
+    }
+
+    /* Resumen del PC - STICKY a la derecha */
     .builder-summary {
       background: linear-gradient(135deg, var(--primary-dark), var(--primary-mid));
       color: white;
       border-radius: 12px;
       padding: 25px;
-      margin-top: 30px;
-      /* Eliminado sticky y posición top para que vaya debajo */
-      position: static; 
-      width: 100%;
+      
+      /* STICKY positioning */
+      position: sticky;
+      top: 150px; /* Espacio desde el top (header + secondary header) */
+      max-height: calc(100vh - 170px); /* Altura máxima para que quepa en viewport */
+      overflow-y: auto; /* Scroll si el contenido es muy largo */
+      
+      /* Sombra para destacar */
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     }
 
     .summary-title {
@@ -681,16 +694,6 @@
     .summary-btn.secondary {
       background: rgba(255,255,255,0.2);
       color: white;
-    }
-
-    /* -----------------------------------------------------
-       CAMBIOS REALIZADOS AQUÍ (Layout General)
-       ----------------------------------------------------- */
-    .builder-layout {
-      display: flex;         /* Cambiado de GRID a FLEX */
-      flex-direction: column; /* Para que se apilen verticalmente */
-      gap: 30px;
-      margin-top: 20px;
     }
 
     /* Modal de carrito */
@@ -828,17 +831,14 @@
 
     /* Responsive */
     @media (max-width: 1024px) {
+      /* En tablets, el resumen va debajo */
       .builder-layout {
-        /* No necesitamos cambiar grid columns porque ahora es flex siempre */
+        grid-template-columns: 1fr;
       }
 
       .builder-summary {
-        position: static;
-      }
-
-      .component-preview {
-        /* En tablet puede que queramos ocultarlo o ajustarlo, 
-           lo dejaremos por defecto como hemos configurado arriba */
+        position: static; /* Quitar sticky en tablets */
+        max-height: none;
       }
     }
 
@@ -867,7 +867,7 @@
         margin-left: 0;
       }
 
-      /* Ocultamos la previsualización en móviles porque no hay hover con ratón */
+      /* Ocultamos la previsualización en móviles */
       .component-preview {
         display: none;
       }
@@ -875,6 +875,11 @@
       .cart-modal {
         width: 100%;
         right: -100%;
+      }
+
+      .builder-summary {
+        position: static;
+        max-height: none;
       }
     }
   </style>
@@ -1061,9 +1066,11 @@
         </div>
 
         <div class="builder-layout">
+          <!-- COMPONENTES A LA IZQUIERDA -->
           <div class="builder-sections" id="builderSections">
-            </div>
+          </div>
 
+          <!-- RESUMEN A LA DERECHA (STICKY) -->
           <div class="builder-summary">
             <div class="summary-title" data-translate="resumenTitulo">📋 Resumen de tu PC</div>
             <div class="summary-items" id="summaryItems"></div>
@@ -1084,6 +1091,9 @@
   <script>
     // Carrito de compras
     let cart = [];
+    
+    // Variable global para almacenar la categoría actual
+    let currentCategory = '';
 
     // Datos del configurador de PC con imágenes
     const pcComponents = {
@@ -1435,9 +1445,11 @@
         productView.style.display = 'none';
         document.getElementById('pc-builder-view').style.display = 'none';
         homeView.style.display = 'block';
+        currentCategory = '';
         return;
       }
 
+      currentCategory = category; // Guardar categoría actual
       homeView.style.display = 'none';
       document.getElementById('pc-builder-view').style.display = 'none';
       productView.style.display = 'block';
@@ -1445,13 +1457,54 @@
       // Título bonito
       categoryTitle.innerText = category.charAt(0).toUpperCase() + category.slice(1);
       
+      // Resetear filtros
+      document.getElementById('minPrice').value = '';
+      document.getElementById('maxPrice').value = '';
+      document.getElementById('sort').value = 'nombre-asc';
+      
       // Renderizar productos
+      renderProducts();
+      window.scrollTo(0,0);
+    }
+
+    // Función para renderizar productos con filtros aplicados
+    function renderProducts() {
       productsGrid.innerHTML = '';
       
-      const items = productsDB[category] || [];
+      let items = productsDB[currentCategory] || [];
       
       if (items.length === 0) {
         productsGrid.innerHTML = '<p>No hay productos disponibles en esta categoría de demostración.</p>';
+        return;
+      }
+
+      // Aplicar filtros de precio
+      const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+      const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
+      
+      items = items.filter(prod => prod.price >= minPrice && prod.price <= maxPrice);
+
+      // Aplicar ordenamiento
+      const sortValue = document.getElementById('sort').value;
+      
+      switch(sortValue) {
+        case 'nombre-asc':
+          items.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+        case 'nombre-desc':
+          items.sort((a, b) => b.name.localeCompare(a.name));
+          break;
+        case 'precio-asc':
+          items.sort((a, b) => a.price - b.price);
+          break;
+        case 'precio-desc':
+          items.sort((a, b) => b.price - a.price);
+          break;
+      }
+
+      // Renderizar productos filtrados
+      if (items.length === 0) {
+        productsGrid.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">No se encontraron productos con los filtros seleccionados.</p>';
       } else {
         items.forEach(prod => {
           const card = document.createElement('div');
@@ -1459,14 +1512,22 @@
           card.innerHTML = `
             <img src="${prod.img}" alt="${prod.name}">
             <h4>${prod.name}</h4>
-            <div class="price">${prod.price} €</div>
+            <div class="price">${prod.price.toFixed(2)} €</div>
             <button onclick='addToCart(${JSON.stringify(prod)})'>Añadir al carrito</button>
           `;
           productsGrid.appendChild(card);
         });
       }
-      window.scrollTo(0,0);
     }
+
+    // Función para aplicar filtros (llamada desde el botón)
+    function applyFilters() {
+      renderProducts();
+    }
+
+    // Event listeners para filtros automáticos
+    document.getElementById('sort').addEventListener('change', renderProducts);
+
 
     categoryCards.forEach(card => {
       card.addEventListener('click', () => {
